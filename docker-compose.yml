@@ -1,34 +1,41 @@
 version: '3.8'
 
 services:
-  web:
-    build: .
-    ports:
-      - "80:80"
-    volumes:
-      - ./src:/var/www/html
-    environment:
-      - APACHE_RUN_USER=www-data
-      - APACHE_RUN_GROUP=www-data
-    depends_on:
-      - db
+    app:
+        build:
+            context: .
+            dockerfile: Dockerfile
+        container_name: laravel_app
+        working_dir: /var/www/html
+        volumes:
+            - ./:/var/www/html
+        ports:
+            - "8000:80"
+        environment:
+            - APACHE_DOCUMENT_ROOT=/var/www/html/public
+        depends_on:
+            - db
 
-  db:
-    image: mysql:8.0
-    command: --default-authentication-plugin=mysql_native_password
-    volumes:
-      - db_data:/var/lib/mysql
-      - ./mysql:/docker-entrypoint-initdb.d
-    environment:
-      MYSQL_ROOT_PASSWORD: root
-      MYSQL_DATABASE: prex
+    db:
+        image: mysql:8.0
+        container_name: laravel_db
+        volumes:
+            - db_data:/var/lib/mysql
+        environment:
+            MYSQL_ROOT_PASSWORD: root
+            MYSQL_DATABASE: laravel
+            MYSQL_USER: laravel
+            MYSQL_PASSWORD: laravel
+        ports:
+            - "3306:3306"
 
-  composer:
-    image: composer:latest
-    volumes:
-      - ./src:/var/www/html
-    working_dir: /var/www/html
-    command: composer install
+    composer:
+        image: composer:2
+        container_name: laravel_composer
+        working_dir: /var/www/html
+        volumes:
+            - ./:/var/www/html
+        command: ["composer", "install", "--no-dev", "--optimize-autoloader"]
 
 volumes:
-  db_data:
+    db_data:
