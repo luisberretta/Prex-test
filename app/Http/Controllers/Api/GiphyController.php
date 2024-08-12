@@ -31,9 +31,10 @@ class GiphyController extends Controller {
             return response()->json($responseBody, 422);
         }
 
-        $validated = $validator->validated();
+        $input = $validator->validated();
 
-        $response = $this->giphyService->searchGifs($validated['query'], $validated['limit'], $validated['offset']);
+        $response = $this->giphyService->searchGifs($input);
+
         $this->interactionService->logInteraction($request, 'search', 200, $response->getBody());
 
         return response()->json(json_decode($response->getBody(), true));
@@ -41,9 +42,9 @@ class GiphyController extends Controller {
 
     public function show($id, Request $request): JsonResponse {
         $response = $this->giphyService->getGifById($id);
-        $this->interactionService->logInteraction($request, 'show', 200, $response->getBody());
+        $this->interactionService->logInteraction($request, 'show', $response->getStatusCode(), $response->getBody());
 
-        return response()->json(json_decode($response->getBody(), true));
+        return response()->json(json_decode($response->getBody(), true), $response->getStatusCode());
     }
 
     public function store(Request $request) {
@@ -60,6 +61,6 @@ class GiphyController extends Controller {
 
         $this->giphyService->saveGif($request);
         $this->interactionService->logInteraction($request, 'save', 201, null);
-        return response()->json();
+        return response()->json([], 201);
     }
 }

@@ -19,13 +19,13 @@ class GiphyService {
         $this->favoriteGifRepository = $favoriteGifRepository;
     }
 
-    public function searchGifs($query, $limit = 10, $offset = 5): ResponseInterface {
+    public function searchGifs($input): ResponseInterface {
         return $this->client->get( $this->gifUrl . 'search', [
             'query' => [
                 'api_key' => env('GIPHY_API_KEY'),
-                'q' => $query,
-                'limit' => $limit,
-                'offset' => $offset
+                'q' => $input['query'],
+                'limit' => array_key_exists('limit', $input) ? $input['limit'] : 5,
+                'offset' => array_key_exists('offset', $input) ? $input['offset'] : 5
             ]
         ]);
     }
@@ -34,7 +34,8 @@ class GiphyService {
         return $this->client->get( $this->gifUrl . $id, [
             'query' => [
                 'api_key' => env('GIPHY_API_KEY'),
-            ]
+            ],
+            'http_errors' => false
         ]);
     }
 

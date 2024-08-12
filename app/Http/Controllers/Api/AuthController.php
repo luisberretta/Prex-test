@@ -26,6 +26,6 @@ class AuthController extends Controller
         $response = $this->authService->login($validated);
         $this->interactionService->logInteraction($request, 'login', $response['status'], $response['body']);
 
-        return response()->json(json_decode($response['body']));
+        return response()->json(json_decode($response['body']), $response['status']);
     }
 }

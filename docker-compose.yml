@@ -1,5 +1,3 @@
-version: '3.8'
-
 services:
     app:
         build:
@@ -10,7 +8,7 @@ services:
         volumes:
             - ./:/var/www/html
         ports:
-            - "8000:80"
+            - "80:80"
         environment:
             - APACHE_DOCUMENT_ROOT=/var/www/html/public
         depends_on:
