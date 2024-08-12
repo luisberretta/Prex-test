@@ -5,6 +5,7 @@
 - cp .env.example .env
 - docker compose up
 - Ingresar a contenedor de Docker: <strong>docker exec -it laravel_app bash</strong>
+- Instalar dependencias: <strong>composer install</strong>
 - Generar key de aplicación: <strong>php artisan key:generate</strong>
 - Correr migraciones y seeder: <strong>php artisan migrate && php artisan db:seed</strong>
 - Instalar passport: <strong>php artisan passport:install</strong>
@@ -12,6 +13,7 @@
     - email: test1@test.com.ar password: password
     - email: test2@test.com.ar password: password
     - email: test3@test.com.ar password: password
+- Asegurarse que este seteada la variable GIPHY_API_KEY=ysKpttUjoKfPdhEpx77RLeQFCuYrp1TN en el .env o cambiar a KEY de Giphy.
 
 ## Diagrama de casos de uso
 ![alt text](casouso.png)

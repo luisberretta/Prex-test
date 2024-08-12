@@ -39,7 +39,7 @@ class GiphyService {
         ]);
     }
 
-    public function saveGif(Request $request): void {
-        $this->favoriteGifRepository->createFavoriteGif($request);
+    public function saveGif(Request $request): array {
+        return $this->favoriteGifRepository->createFavoriteGif($request);
     }
 }

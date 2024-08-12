@@ -59,8 +59,8 @@ class GiphyController extends Controller {
             return response()->json($responseBody, 422);
         }
 
-        $this->giphyService->saveGif($request);
-        $this->interactionService->logInteraction($request, 'save', 201, null);
-        return response()->json([], 201);
+        $response = $this->giphyService->saveGif($request);
+        $this->interactionService->logInteraction($request, 'save', $response['status'], $response['body']);
+        return response()->json($response['body'], $response['status']);
     }
 }
